@@ -41,17 +41,7 @@ public class LetterFrequencyUtils {
     public static double[] FREQUENCIES = {
             A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     };
-
-    /**
-     * @return empty array of frequencies
-     */
-    public static double[] initialiseFrequencies() {
-        double[] freq = new double[ALPHABET_COUNT];
-        for (int i = 0; i < freq.length; i++)
-            freq[i] = 0.0;
-        return freq;
-    }
-
+    
     /**
      * Compares inFreq with frequencies of english language and returns the total offset
      * @param inFreq frequencies of characters in ciphertext
@@ -72,7 +62,7 @@ public class LetterFrequencyUtils {
         // only interested in the alphabet
         message = message.replaceAll("[^a-zA-Z]", "").toUpperCase();
 
-        double[] frequencies = LetterFrequencyUtils.initialiseFrequencies();
+        double[] frequencies = new double[ALPHABET_COUNT];
 
         // update the frequency of this character using the ASCII character value
         for (char c : message.toUpperCase().toCharArray())
