@@ -20,13 +20,13 @@ public class CaesarCipher {
 
         String plaintext = "ILOVECAKE";
         int shift = 3;
-        String cipherText = CaesarCipher.encrypt(3, plaintext);
+        String cipherText = CaesarCipher.encrypt(plaintext, 3);
 
         System.out.println("Plaintex: " + plaintext);
         System.out.println("Shift: " + shift);
         System.out.println("Ciphertext: " + cipherText);
 
-        String decryptedText = CaesarCipher.decrypt(3, cipherText);
+        String decryptedText = CaesarCipher.decrypt(cipherText, 3);
         System.out.println("Decryption result: " + decryptedText);
 
         System.out.println("\nBrute Force Attack");
@@ -35,7 +35,7 @@ public class CaesarCipher {
         System.out.println("FREQUENCY ANALYSIS");
         System.out.println("Encrypting The Restaurant at the End of the Universe...");
         String bigText = CaesarCipher.readFile(CaesarCipher.class.getResource("/hitch2.txt"));
-        String encryptedBigText = CaesarCipher.encrypt(3, bigText);
+        String encryptedBigText = CaesarCipher.encrypt(bigText, 3);
         System.out.println(encryptedBigText.substring(0, encryptedBigText.length() > 200 ? 200 : encryptedBigText.length() - 1) + "...");
 
         System.out.println("Performing frequency analysis...");
@@ -53,11 +53,11 @@ public class CaesarCipher {
 
     /**
      * Encrypts the plaintext by shifting each character by the value of shift
-     * @param shift the value to shift each character
      * @param plaintext the message to be encrypted
+     * @param shift the value to shift each character
      * @return the encyrpted string
      */
-    public static String encrypt(int shift, String plaintext) {
+    public static String encrypt(String plaintext, int shift) {
         // only interested in the alphabet
         plaintext = plaintext.replaceAll("[^a-zA-Z]", "").toUpperCase();
         StringBuilder ciphertext = new StringBuilder();
@@ -68,26 +68,26 @@ public class CaesarCipher {
         Finally, add the ascii starting value (65) back to each character to get the respective uppercase character.
          */
         for (char c : plaintext.toCharArray())
-            ciphertext.append((char) (((c - ASCII_START_POS + shift) % ALPHABET_COUNT) + ASCII_START_POS));
-
+            ciphertext.append((char) (Math.floorMod(((int)c - ASCII_START_POS + shift), ALPHABET_COUNT) + ASCII_START_POS));
         return ciphertext.toString();
     }
 
     /**
      * Decrypts the ciphertext by shifting each character in the ciphertext by the negated value of shift.
      *
-     * e.g. if the shift value used to encrypt was 3, to decrypt the shift value must be -3 (3 + -3 = 0)
-     * @param shift
+     * <p>e.g. if the shift value used to encrypt was 3, to decrypt the shift value must be -3 (3 + -3 = 0)
+     * <p>Note: Could call {@code encrypt(ciphertext, -shift)} for same result. I'm just being explicit here for learning purposes.
      * @param ciphertext
+     * @param shift the value to subtract from each character in the ciphertext
      * @return
      */
-    public static String decrypt(int shift, String ciphertext) {
+    public static String decrypt(String ciphertext, int shift) {
         // only interested in the alphabet
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "").toUpperCase();
 
         StringBuilder plaintext = new StringBuilder();
         for (char c : ciphertext.toCharArray())
-            plaintext.append((char) (((c - ASCII_START_POS - shift) % ALPHABET_COUNT) + ASCII_START_POS));
+            plaintext.append((char) ((Math.floorMod(((int) c - ASCII_START_POS - shift), ALPHABET_COUNT)) + ASCII_START_POS));
         return plaintext.toString();
     }
 
@@ -100,7 +100,7 @@ public class CaesarCipher {
     public static void bruteForceAttack(String ciphertext) {
         // shift of 0 or 26 would result in no change
         for (int shift = 1; shift < ALPHABET_COUNT; shift++)
-            System.out.println("shift: " + shift + ", " + decrypt(shift, ciphertext));
+            System.out.println("shift: " + shift + ", " + decrypt(ciphertext, shift));
     }
 
     /**
@@ -117,7 +117,7 @@ public class CaesarCipher {
     {
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]","");
         int bestShift = calcBestShft(LetterFrequencyUtils.calculateFrequencies(ciphertext));
-        return decrypt(bestShift, ciphertext);
+        return decrypt(ciphertext, bestShift);
     }
 
     /**
