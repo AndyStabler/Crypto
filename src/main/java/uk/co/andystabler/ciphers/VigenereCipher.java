@@ -10,14 +10,15 @@ public class VigenereCipher {
     /**
      * Encrypts the {@code plaintext} using the Vigenère cipher with the {@code key} provided.
      * <p>See {@link uk.co.andystabler.ciphers.VigenereCipher#repeatKey} for more details on how the key is used.
+     *
      * @param plaintext the text to be encrypted
-     * @param key the key to encrypt the plaintext- must be characters matching [a-z]
+     * @param key       the key to encrypt the plaintext- must be characters matching [a-z]
      * @return
      */
-    public static String encrypt(String plaintext, String key)
-    {
+    public static String encrypt(String plaintext, String key) {
         // key must be an alphabetic strng
-        if (!key.matches("[a-zA-Z]+")) throw new IllegalArgumentException("Invalid key - must be one or more characters in range a...z");
+        if (!key.matches("[a-zA-Z]+"))
+            throw new IllegalArgumentException("Invalid key - must be one or more characters in range a...z");
 
         // only interested in the alphabet
         plaintext = plaintext.replaceAll("[^a-zA-Z]", "").toUpperCase();
@@ -26,22 +27,29 @@ public class VigenereCipher {
         key = repeatKey(key, plaintext.length()).toUpperCase();
 
         StringBuilder ciphertext = new StringBuilder();
-        for (int i = 0; i < plaintext.length(); i++)
-            ciphertext.append(CaesarCipher.encrypt(String.valueOf(plaintext.charAt(i)), key.charAt(i) - ASCII_START_POS));
+        for (int i = 0; i < plaintext.length(); i++) {
+            // get the character at index i
+            String toEncrypt = String.valueOf(plaintext.charAt(i));
+            // the shift is equal to the char at index i of the key
+            // subtracting ASCII_START_POS to have a value in range 0-25
+            int shift = key.charAt(i) - ASCII_START_POS;
+            ciphertext.append(CaesarCipher.encrypt(toEncrypt, shift));
+        }
         return ciphertext.toString();
     }
 
     /**
      * Decrypts the {@code ciphertext} using the Vigenère cipher with the {@code key} provided.
      * <p>See {@link uk.co.andystabler.ciphers.VigenereCipher#repeatKey} for more details on how the key is used.
+     *
      * @param ciphertext the text to be decrypted
-     * @param key the key to decrypt the ciphertext- must be characters matching [a-z]
+     * @param key        the key to decrypt the ciphertext- must be characters matching [a-z]
      * @return
      */
-    public static String decrypt(String ciphertext, String key)
-    {
+    public static String decrypt(String ciphertext, String key) {
         // key must be an alphabetic strng
-        if (!key.matches("[a-zA-Z]+")) throw new IllegalArgumentException("Invalid key - must be one or more characters in range a...z");
+        if (!key.matches("[a-zA-Z]+"))
+            throw new IllegalArgumentException("Invalid key - must be one or more characters in range a...z");
 
         // only interested in the alphabet
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "").toUpperCase();
@@ -50,8 +58,14 @@ public class VigenereCipher {
         key = repeatKey(key, ciphertext.length()).toUpperCase();
 
         StringBuilder plaintext = new StringBuilder();
-        for (int i = 0; i < ciphertext.length(); i++)
-            plaintext.append(CaesarCipher.decrypt(String.valueOf(ciphertext.charAt(i)), key.charAt(i) - ASCII_START_POS));
+        for (int i = 0; i < ciphertext.length(); i++) {
+            // get the character at index i
+            String toDecrypt = String.valueOf(ciphertext.charAt(i));
+            // the shift is equal to the char at index i of the key
+            // subtracting ASCII_START_POS to have a value in range 0-25
+            int shift = key.charAt(i) - ASCII_START_POS;
+            plaintext.append(CaesarCipher.decrypt(toDecrypt, shift));
+        }
         return plaintext.toString();
     }
 
@@ -67,12 +81,12 @@ public class VigenereCipher {
      * length = 12
      * returns "hellohellohe"
      * }</pre>
-     * @param key the key to be repeated
+     *
+     * @param key    the key to be repeated
      * @param length the required length
      * @return the repeated key
      */
-    public static String repeatKey(String key, int length)
-    {
+    public static String repeatKey(String key, int length) {
         if (key == null || length <= 0) return "";
         if (key.length() == length) return key;
         if (key.length() > length) return key.substring(0, length);
@@ -80,7 +94,7 @@ public class VigenereCipher {
         // need to repeat the key
         int keysInLen = length / key.length();
         // if the key doesn't fit into the length exactly, a truncated version will be used at the end
-        int remainder = length - (key.length()*keysInLen);
+        int remainder = length - (key.length() * keysInLen);
 
         StringBuilder newKey = new StringBuilder();
         for (int i = 0; i < keysInLen; i++)
