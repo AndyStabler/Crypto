@@ -16,7 +16,7 @@ public class CaesarCipher {
     public static int ASCII_START_POS = 65;
     public static int ALPHABET_COUNT = 26;
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
         String plaintext = "ILOVECAKE";
         int shift = 3;
@@ -53,41 +53,56 @@ public class CaesarCipher {
 
     /**
      * Encrypts the plaintext by shifting each character by the value of shift
+     *
      * @param plaintext the message to be encrypted
-     * @param shift the value to shift each character
+     * @param shift     the value to shift each character
      * @return the encyrpted string
      */
     public static String encrypt(String plaintext, int shift) {
         // only interested in the alphabet
         plaintext = plaintext.replaceAll("[^a-zA-Z]", "").toUpperCase();
         StringBuilder ciphertext = new StringBuilder();
-        /*
-        Subtract the starting value of ascii chars we're working with (65) from each character, this should
-        give us values in the range of 0-25. Then we can add the shift and perform the modulo operation,
-        which again results in a value in the range of 0-25.
-        Finally, add the ascii starting value (65) back to each character to get the respective uppercase character.
-         */
-        for (char c : plaintext.toCharArray())
-            ciphertext.append((char) (Math.floorMod(((int)c - ASCII_START_POS + shift), ALPHABET_COUNT) + ASCII_START_POS));
+        for (char c : plaintext.toCharArray()) {
+            // all upper case chars are in the ascii range 65-90.
+            // Subtracting 65 from from the character gives us a value in the range of 0 25
+            int newPos = c - ASCII_START_POS;
+            // add the shift to the position
+            newPos += shift;
+            // perform the modulo to make sure the result is in the range of 0-25
+            newPos = Math.floorMod(newPos, ALPHABET_COUNT);
+            // add 65 to the value to get the uppercase character
+            newPos += ASCII_START_POS;
+            ciphertext.append((char) newPos);
+        }
         return ciphertext.toString();
     }
 
     /**
      * Decrypts the ciphertext by shifting each character in the ciphertext by the negated value of shift.
-     *
-     * <p>e.g. if the shift value used to encrypt was 3, to decrypt the shift value must be -3 (3 + -3 = 0)
+     * <p>
+     * <p>e.g. if the shift value used to encrypt was 3, to decrypt, the shift value must be -3 (3 + -3 = 0)
      * <p>Note: Could call {@code encrypt(ciphertext, -shift)} for same result. I'm just being explicit here for learning purposes.
+     *
      * @param ciphertext
-     * @param shift the value to subtract from each character in the ciphertext
+     * @param shift      the value to subtract from each character in the ciphertext
      * @return
      */
     public static String decrypt(String ciphertext, int shift) {
         // only interested in the alphabet
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "").toUpperCase();
-
         StringBuilder plaintext = new StringBuilder();
-        for (char c : ciphertext.toCharArray())
-            plaintext.append((char) ((Math.floorMod(((int) c - ASCII_START_POS - shift), ALPHABET_COUNT)) + ASCII_START_POS));
+        for (char c : ciphertext.toCharArray()) {
+            // all upper case chars are in the ascii range 65-90.
+            // Subtracting 65 from from the character gives us a value in the range of 0 25
+            int newPos = c - ASCII_START_POS;
+            // subtract the shift from the position
+            newPos -= shift;
+            // perform the modulo to make sure the result is in the range of 0-25
+            newPos = Math.floorMod(newPos, ALPHABET_COUNT);
+            // add 65 to the value to get the uppercase character
+            newPos += ASCII_START_POS;
+            plaintext.append((char) newPos);
+        }
         return plaintext.toString();
     }
 
@@ -95,6 +110,7 @@ public class CaesarCipher {
      * Applies all possible shift values to the ciphertext and prints result
      * <p>
      * Requires human to check results
+     *
      * @param ciphertext the ciphertext to decrypt
      */
     public static void bruteForceAttack(String ciphertext) {
@@ -113,20 +129,19 @@ public class CaesarCipher {
      * @param ciphertext the encrypted message
      * @return best guess at plaintext
      */
-    public static String frequencyAnalysis(String ciphertext)
-    {
-        ciphertext = ciphertext.replaceAll("[^a-zA-Z]","");
+    public static String frequencyAnalysis(String ciphertext) {
+        ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
         int bestShift = calcBestShft(LetterFrequencyUtils.calculateFrequencies(ciphertext));
         return decrypt(ciphertext, bestShift);
     }
 
     /**
      * Determines which shift value would produce character frequencies closest to the alphabet
+     *
      * @param frequencies the frequencies of characters in the ciphertext
      * @return the best guess shift value
      */
-    public static int calcBestShft(double[] frequencies)
-    {
+    public static int calcBestShft(double[] frequencies) {
         int shift = 0;
         int lowestDiff = Integer.MAX_VALUE;
 
@@ -135,8 +150,7 @@ public class CaesarCipher {
             // the total difference between frequency of characters in the encrypted message and english language
             int tempDiff = LetterFrequencyUtils.calculateFrequencyOffset(frequencies);
             // keep note of the shift that produces character frequencies similar to the english language
-            if (tempDiff < lowestDiff)
-            {
+            if (tempDiff < lowestDiff) {
                 lowestDiff = tempDiff;
                 shift = i;
             }
@@ -148,6 +162,7 @@ public class CaesarCipher {
 
     /**
      * shift each element in the frequency array by -1
+     *
      * @param messageFrequencies
      */
     public static void shiftFrequencies(double[] messageFrequencies) {
@@ -155,8 +170,8 @@ public class CaesarCipher {
             return;
         double temp = messageFrequencies[0];
         for (int i = 0; i < messageFrequencies.length - 1; i++) {
-            messageFrequencies[i] = messageFrequencies[i+1];
+            messageFrequencies[i] = messageFrequencies[i + 1];
         }
-        messageFrequencies[messageFrequencies.length-1] = temp;
+        messageFrequencies[messageFrequencies.length - 1] = temp;
     }
 }
