@@ -5,7 +5,6 @@ package uk.co.andystabler.ciphers;
  */
 public class LetterFrequencyUtils {
 
-    public static int ASCII_START_POS = 65;
     public static int ALPHABET_COUNT = 26;
 
     /*
@@ -66,7 +65,7 @@ public class LetterFrequencyUtils {
 
         // update the frequency of this character using the ASCII character value
         for (char c : message.toUpperCase().toCharArray())
-            frequencies[(c - ASCII_START_POS) % ALPHABET_COUNT] += (100.0 / message.length());
+            frequencies[(c - 'A') % ALPHABET_COUNT] += (100.0 / message.length());
 
         return frequencies;
     }

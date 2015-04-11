@@ -13,7 +13,6 @@ import java.nio.file.Paths;
  */
 public class CaesarCipher {
 
-    public static int ASCII_START_POS = 65;
     public static int ALPHABET_COUNT = 26;
 
     public static void main(String[] args) throws Exception {
@@ -64,14 +63,14 @@ public class CaesarCipher {
         StringBuilder ciphertext = new StringBuilder();
         for (char c : plaintext.toCharArray()) {
             // all upper case chars are in the ascii range 65-90.
-            // Subtracting 65 from from the character gives us a value in the range of 0 25
-            int newPos = c - ASCII_START_POS;
+            // Subtracting A (65) from from the character gives us a value in the range of 0 25
+            int newPos = c - 'A';
             // add the shift to the position
             newPos += shift;
             // perform the modulo to make sure the result is in the range of 0-25
             newPos = Math.floorMod(newPos, ALPHABET_COUNT);
-            // add 65 to the value to get the uppercase character
-            newPos += ASCII_START_POS;
+            // add A (65) to the value to get the uppercase character
+            newPos += 'A';
             ciphertext.append((char) newPos);
         }
         return ciphertext.toString();
@@ -93,14 +92,14 @@ public class CaesarCipher {
         StringBuilder plaintext = new StringBuilder();
         for (char c : ciphertext.toCharArray()) {
             // all upper case chars are in the ascii range 65-90.
-            // Subtracting 65 from from the character gives us a value in the range of 0 25
-            int newPos = c - ASCII_START_POS;
+            // Subtracting A (65) from from the character gives us a value in the range of 0 25
+            int newPos = c - 'A';
             // subtract the shift from the position
             newPos -= shift;
             // perform the modulo to make sure the result is in the range of 0-25
             newPos = Math.floorMod(newPos, ALPHABET_COUNT);
-            // add 65 to the value to get the uppercase character
-            newPos += ASCII_START_POS;
+            // add A (65) to the value to get the uppercase character
+            newPos += 'A';
             plaintext.append((char) newPos);
         }
         return plaintext.toString();

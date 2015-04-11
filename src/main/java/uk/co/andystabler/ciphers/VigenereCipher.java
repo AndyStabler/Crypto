@@ -5,8 +5,6 @@ package uk.co.andystabler.ciphers;
  */
 public class VigenereCipher {
 
-    public static int ASCII_START_POS = 65;
-
     /**
      * Encrypts the {@code plaintext} using the Vigenère cipher with the {@code key} provided.
      * <p>See {@link uk.co.andystabler.ciphers.VigenereCipher#repeatKey} for more details on how the key is used.
@@ -31,8 +29,8 @@ public class VigenereCipher {
             // get the character at index i
             String toEncrypt = String.valueOf(plaintext.charAt(i));
             // the shift is equal to the char at index i of the key
-            // subtracting ASCII_START_POS to have a value in range 0-25
-            int shift = key.charAt(i) - ASCII_START_POS;
+            // subtracting A (65) to have a value in range 0-25
+            int shift = key.charAt(i) - 'A';
             ciphertext.append(CaesarCipher.encrypt(toEncrypt, shift));
         }
         return ciphertext.toString();
@@ -62,8 +60,8 @@ public class VigenereCipher {
             // get the character at index i
             String toDecrypt = String.valueOf(ciphertext.charAt(i));
             // the shift is equal to the char at index i of the key
-            // subtracting ASCII_START_POS to have a value in range 0-25
-            int shift = key.charAt(i) - ASCII_START_POS;
+            // subtracting A (65) to have a value in range 0-25
+            int shift = key.charAt(i) - 'A';
             plaintext.append(CaesarCipher.decrypt(toDecrypt, shift));
         }
         return plaintext.toString();
@@ -102,4 +100,5 @@ public class VigenereCipher {
         newKey.append(key.substring(0, remainder));
         return newKey.toString();
     }
+
 }
