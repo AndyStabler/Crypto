@@ -48,8 +48,9 @@ public class VigenereCipher {
      * @return
      */
     public static String decrypt(String ciphertext, String key) {
+
         // key must be an alphabetic string
-        if (!key.matches("[a-zA-Z]+"))
+        if (key == null || !key.matches("[a-zA-Z]+"))
             throw new IllegalArgumentException("Invalid key - must be one or more characters in range a...z");
 
         // only interested in the alphabet
