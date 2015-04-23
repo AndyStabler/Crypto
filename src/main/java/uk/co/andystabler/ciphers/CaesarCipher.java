@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 /**
  * Utility class used for operations concerning the Caesar cipher - encryption, decryption, cracking
+ *
  */
 public class CaesarCipher {
 
@@ -130,33 +131,23 @@ public class CaesarCipher {
      */
     public static String frequencyAnalysis(String ciphertext) {
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
-        int bestShift = calcBestShft(LetterFrequencyUtils.calculateFrequencies(ciphertext));
+        int bestShift = calculateShift(ciphertext); //calcBestShft(LetterFrequencyUtils.calculateFrequencies(ciphertext));
         return decrypt(ciphertext, bestShift);
     }
 
-    /**
-     * Determines which shift value would produce character frequencies closest to the alphabet
-     *
-     * @param frequencies the frequencies of characters in the ciphertext
-     * @return the best guess shift value
-     */
-    public static int calcBestShft(double[] frequencies) {
-        int shift = 0;
-        int lowestDiff = Integer.MAX_VALUE;
-
-        // for every letter in the alphabet
-        for (int i = 0; i < frequencies.length; i++) {
-            // the total difference between frequency of characters in the encrypted message and english language
-            int tempDiff = LetterFrequencyUtils.calculateFrequencyOffset(frequencies);
-            // keep note of the shift that produces character frequencies similar to the english language
-            if (tempDiff < lowestDiff) {
-                lowestDiff = tempDiff;
+    public static int calculateShift(String ciphertext) {
+        ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
+        int shift = -1;
+        double fitness = Integer.MAX_VALUE;
+        for (int i = 0; i < ALPHABET_COUNT; i++) {
+            double tempFitness = LetterFrequencyUtils.chiSquaredAgainstEnglish(CaesarCipher.decrypt(ciphertext, i));
+            // if the shift resulted in text close english, make a note of it
+            if (tempFitness < fitness) {
+                fitness = tempFitness;
                 shift = i;
             }
-            // decrement the position of each frequency in the array
-            shiftFrequencies(frequencies);
         }
-        return lowestDiff != Integer.MAX_VALUE ? shift : -1;
+        return shift;
     }
 
     /**
