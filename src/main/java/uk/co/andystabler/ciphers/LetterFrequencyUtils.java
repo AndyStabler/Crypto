@@ -8,8 +8,8 @@ public class LetterFrequencyUtils {
     public static int ALPHABET_COUNT = 26;
 
     /* The index of coincidence bounds text should have if it is in the english language */
-    public static double ENG_IC_LOWER_BOUND = 0.064;
-    public static double ENG_IC_UPPER_BOUND = 0.069;
+    public static double ENG_IC_LOWER_BOUND = 0.061;
+    public static double ENG_IC_UPPER_BOUND = 0.071;
     public static double ENG_IC = 0.0686;
 
     /*
