@@ -8,8 +8,7 @@ import org.junit.runner.RunWith;
 @RunWith(Enclosed.class)
 public class CaesarCipherTests {
 
-    public static class encrypt
-    {
+    public static class encrypt {
         @Test
         public void emptyPlaintext_ReturnsEmptyString() {
             String plaintext = "";
@@ -43,7 +42,7 @@ public class CaesarCipherTests {
         }
     }
 
-    public static class decrypt{
+    public static class decrypt {
         @Test
         public void emptyPlaintext_ReturnsEmptyString() {
             String ciphertext = "";
@@ -75,6 +74,31 @@ public class CaesarCipherTests {
             String expected = "THETRUTHISRARELYPUREANDNEVERSIMPLE";
             Assert.assertEquals(expected, CaesarCipher.decrypt(ciphertext, shift));
         }
+    }
+
+    public static class calculateShiftValue {
+
+        @Test
+        public void shift1() {
+            String ciphertext = "UIFUSVUIJTSBSFMZQVSFBOEOFWFSTJNQMF";
+            int expectedShift = 1;
+            Assert.assertEquals(expectedShift, CaesarCipher.calculateShift(ciphertext));
+        }
+
+        @Test
+        public void shift3() {
+            String ciphertext = "WKHWUXWKLVUDUHOBSXUHDQGQHYHUVLPSOH";
+            int expectedShift = 3;
+            Assert.assertEquals(expectedShift, CaesarCipher.calculateShift(ciphertext));
+        }
+
+        @Test
+        public void shift5() {
+            String ciphertext = "YMJYWZYMNXWFWJQDUZWJFSISJAJWXNRUQJ";
+            int expectedShift = 5;
+            Assert.assertEquals(expectedShift, CaesarCipher.calculateShift(ciphertext));
+        }
+
     }
 
 }
