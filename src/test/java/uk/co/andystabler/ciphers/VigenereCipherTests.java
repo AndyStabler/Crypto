@@ -181,6 +181,37 @@ public class VigenereCipherTests {
 
         }
 
+        @Test
+        public void keyLength10LongText() {
+            String text = "ticvw nmfewp vzxfklx fawm elc tcjn gr bsi dckzfq. gvnpc xcihgz elw jcpxy\n" +
+                    "szl yiamjvmk, iqel yp ceijywfw znyte egaeeajc; roff xpxspgr qse\n" +
+                    "pzvqg-drwwp iyh zqlp; xmptpc ucq sfgzl, amlm, yex hazvc. fcpis, gz bsi\n" +
+                    "mvfvl zmvo, ayu qdudx iyh qmgehq, iqel ztgcfamve kpgce yqqa lrb\n" +
+                    "lck-vdmkv lykp kbsf elw ynursk gvemba. fv qgdm csspb xfseapw, ypb fh zua\n" +
+                    "qspgfvuv iid e rjge, faspergpe-jbsbmo wacp. zn oma elgu qtuj fplx kcbv\n" +
+                    "bsdzj wm ryinaocwepnw lhmeclp, cxce zgd i hmxcpu. nzua dgyt urm ltm zrja\n" +
+                    "fzhl an septw'j pwdg xcqvcicgga aeqv, mw nzq zpeqql yy zml micp jvzl av\n" +
+                    "elc fsimdqgd' hmqpjnwb mwitgl pysda midqpv. ul fpp eeg mw ifq gpep qju,\n" +
+                    "bsdzj lyf qfgwtwh wsttzpwp i nypuc wlgy bsi etcrnweb oepm qfluqzpv mh\n" +
+                    "ycf luup, pmtb midpmxspv, uyikq vlqc omjn oubnlcu yex ouhlvbu qkcdx\n" +
+                    "npepgb ki kbmlo. fcpis'k bicilvq yuv pqph gp tffvquzvr'u yknsos, myr\n" +
+                    "jyilq tio iqeygyv iqel fkq ccytbymli qtuj, mvo wmocyio - zwmsba\n" +
+                    "sexwdaesmf uys natoikqpk'm haepvq jyu vwqv oiqvpfswp bsi gpqkuff pp lyf\n" +
+                    "drcdql es ikjc bsdzj. wm jyilq tio fcgl slggosx sr zp bae lpeb omkbwd'a\n" +
+                    "dmqvci ufp ppv fwqsufp. pp lyf qgyff bpr wgyim oubs xfg bllkxmjw, lgtvl\n" +
+                    "mzlpvqvyexazo hlw jc byhf ulogpe fxv fptreu frjhqv hmrjmln eqiymli rf,\n" +
+                    "vwxqpzgpe kbw pccwjgwj' mlazj xfcr yy zml rsr jgj mumz tr rjc tuj ozlwf\n" +
+                    "vfrn zml vmjncu bae xlvcprj. ufp bsil, gvrwlxg l cccp rag, twraytrj bsp\n" +
+                    "ecmrvce ng ticvw, clu nzq essjg qkijk plh aqkv imf. plvpa frx lmspr sr\n" +
+                    "fzm hxini yv uztsdl dgfqmc, qzqzp lc clu bae anep yciy xmuzyq ... dsk\n" +
+                    "hgi bsi qeffid kmlv ucq fpwd, iyh fg urm tmkv agvf kbw pccwjgwj zgd bsi\n" +
+                    "qwkdyj, nino rq zvcfs bciyvcu fawm l hmi ryul tio vmnjvx az azqcvfzhy\n" +
+                    "euppja.";
+            text = text.replaceAll("[^a-zA-Z]","");
+            String key = "MILEYCYRUS";
+            Assert.assertEquals(key, VigenereCipher.calculateKey(text));
+        }
+
         /**
          * Our method that uses the index of coincidence as the indicator of whether the key length is correct only
          * really works for long strings!
