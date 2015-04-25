@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 
 /**
  * Utility class used for operations concerning the Caesar cipher - encryption, decryption, cracking
- *
  */
 public class CaesarCipher {
 
@@ -131,17 +130,24 @@ public class CaesarCipher {
      */
     public static String frequencyAnalysis(String ciphertext) {
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
-        int bestShift = calculateShift(ciphertext); //calcBestShft(LetterFrequencyUtils.calculateFrequencies(ciphertext));
+        int bestShift = calculateShift(ciphertext);
         return decrypt(ciphertext, bestShift);
     }
 
+    /**
+     * Uses the {@link LetterFrequencyUtils#chiSquareAgainstEnglish(String)}
+     *
+     * @param ciphertext the ciphertext to analyse
+     * @return a best guess at the shift value used, or -1 if one can't be determined.
+     */
     public static int calculateShift(String ciphertext) {
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
         int shift = -1;
         double fitness = Integer.MAX_VALUE;
         for (int i = 0; i < ALPHABET_COUNT; i++) {
-            double tempFitness = LetterFrequencyUtils.chiSquaredAgainstEnglish(CaesarCipher.decrypt(ciphertext, i));
-            // if the shift resulted in text close english, make a note of it
+            // shift the ciphertext by i characters and compute the chi-square for the result
+            double tempFitness = LetterFrequencyUtils.chiSquareAgainstEnglish(CaesarCipher.decrypt(ciphertext, i));
+            // if the chi-square was lower than the previous value, make a note of it
             if (tempFitness < fitness) {
                 fitness = tempFitness;
                 shift = i;
@@ -150,18 +156,4 @@ public class CaesarCipher {
         return shift;
     }
 
-    /**
-     * shift each element in the frequency array by -1
-     *
-     * @param messageFrequencies
-     */
-    public static void shiftFrequencies(double[] messageFrequencies) {
-        if (messageFrequencies.length <= 1)
-            return;
-        double temp = messageFrequencies[0];
-        for (int i = 0; i < messageFrequencies.length - 1; i++) {
-            messageFrequencies[i] = messageFrequencies[i + 1];
-        }
-        messageFrequencies[messageFrequencies.length - 1] = temp;
-    }
 }
