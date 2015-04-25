@@ -48,7 +48,6 @@ public class VigenereCipher {
      * @return
      */
     public static String decrypt(String ciphertext, String key) {
-
         // key must be an alphabetic string
         if (key == null || !key.matches("[a-zA-Z]+"))
             throw new IllegalArgumentException("Invalid key - must be one or more characters in range a...z");
@@ -124,13 +123,13 @@ public class VigenereCipher {
         // now we need to solve 'length' many caesar ciphers - easy!
 
         // get every character spaced by key length many characters
-        // abcdefgh with length 3 would be ["adg", "beh", "cf"]
+        // "abcdefgh" with length 3 would be ["adg", "beh", "cf"]
         List<String> caesarCipherStrings = StringUtils.getAllStringsAtInterval(ciphertext, length);
         StringBuilder key = new StringBuilder();
         for (String caesarCipherTxt : caesarCipherStrings) {
             // crack the caesar cipher text
             int shift = CaesarCipher.calculateShift(caesarCipherTxt);
-            // add 'A' (65) to get an ASCII character in the range A-Z
+            // add 'A' (65) to the shift value to get an ASCII character in the range A-Z
             char charVal = (char) (shift + 'A');
             // add the character to the key string
             key.append(charVal);
