@@ -135,8 +135,21 @@ public class LetterFrequencyUtils {
         return indexCo;
     }
 
-    public static double chiSquaredAgainstEnglish(String ciphertext) {
-        ciphertext.replaceAll("[^a-zA-Z]", "");
+    /**
+     * Compares frequencies of characters in the {@code ciphertext} with those expected in the english language using
+     * a chi-squared test.
+     * <p>
+     * chiSq = {@code Sum of ((Ci - Ei)^2)/Ei}
+     * <p>
+     * where {@code Ci} is the observed number of occurrences of the ith letter of the alphabet in the ciphertext,
+     * and {@code Ei} is the expected number of occurrences of the ith letter of the alphabet in an english string
+     * with the length of {@code ciphertext}, based on {@link LetterFrequencyUtils#expectedCharacterCounts(int)}
+     *
+     * @param ciphertext the ciphertext to analyse
+     * @return a fitness value indicating whether the ciphertext is english
+     */
+    public static double chiSquareAgainstEnglish(String ciphertext) {
+        ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
         // an array containing the total number of times each character occurred in the ciphertext
         int[] characterCounts = LetterFrequencyUtils.countCharacters(ciphertext);
         // an array containing the expected number of times each character should occur in text the length of the
