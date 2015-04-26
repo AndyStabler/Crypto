@@ -33,11 +33,12 @@ public class CaesarCipher {
         System.out.println("Encrypting The Restaurant at the End of the Universe...");
         String bigText = CaesarCipher.readFile(CaesarCipher.class.getResource("/hitch2.txt"));
         String encryptedBigText = CaesarCipher.encrypt(bigText, 3);
-        System.out.println(encryptedBigText.substring(0, encryptedBigText.length() > 200 ? 200 : encryptedBigText.length() - 1) + "...");
+        System.out.println(encryptedBigText.substring(0, 200) + "...");
 
         System.out.println("Performing frequency analysis...");
         String bigCipherText = CaesarCipher.frequencyAnalysis(encryptedBigText);
-        System.out.println(bigCipherText.substring(0, bigCipherText.length() > 200 ? 200 : bigCipherText.length() - 1) + "...");
+        System.out.println(bigCipherText.substring(0, 200) + "...");
+
     }
 
     /**
