@@ -13,8 +13,6 @@ import java.nio.file.Paths;
  */
 public class CaesarCipher {
 
-    public static int ALPHABET_COUNT = 26;
-
     public static void main(String[] args) throws Exception {
 
         String plaintext = "ILOVECAKE";
@@ -68,7 +66,7 @@ public class CaesarCipher {
             // add the shift to the position
             newPos += shift;
             // perform the modulo to make sure the result is in the range of 0-25
-            newPos = Math.floorMod(newPos, ALPHABET_COUNT);
+            newPos = Math.floorMod(newPos, LetterFrequencyUtils.ALPHABET_COUNT);
             // add A (65) to the value to get the uppercase character
             newPos += 'A';
             ciphertext.append((char) newPos);
@@ -97,7 +95,7 @@ public class CaesarCipher {
             // subtract the shift from the position
             newPos -= shift;
             // perform the modulo to make sure the result is in the range of 0-25
-            newPos = Math.floorMod(newPos, ALPHABET_COUNT);
+            newPos = Math.floorMod(newPos, LetterFrequencyUtils.ALPHABET_COUNT);
             // add A (65) to the value to get the uppercase character
             newPos += 'A';
             plaintext.append((char) newPos);
@@ -114,7 +112,7 @@ public class CaesarCipher {
      */
     public static void bruteForceAttack(String ciphertext) {
         // shift of 0 or 26 would result in no change
-        for (int shift = 1; shift < ALPHABET_COUNT; shift++)
+        for (int shift = 1; shift < LetterFrequencyUtils.ALPHABET_COUNT; shift++)
             System.out.println("shift: " + shift + ", " + decrypt(ciphertext, shift));
     }
 
@@ -138,13 +136,13 @@ public class CaesarCipher {
      * Uses the {@link LetterFrequencyUtils#chiSquareAgainstEnglish(String)}
      *
      * @param ciphertext the ciphertext to analyse
-     * @return a best guess at the shift value used, or -1 if one can't be determined.
+     * @return a best guess at the shift value used, or 0 if one can't be determined.
      */
     public static int calculateShift(String ciphertext) {
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
-        int shift = -1;
+        int shift = 0;
         double fitness = Integer.MAX_VALUE;
-        for (int i = 0; i < ALPHABET_COUNT; i++) {
+        for (int i = 0; i < LetterFrequencyUtils.ALPHABET_COUNT; i++) {
             // shift the ciphertext by i characters and compute the chi-square for the result
             double tempFitness = LetterFrequencyUtils.chiSquareAgainstEnglish(CaesarCipher.decrypt(ciphertext, i));
             // if the chi-square was lower than the previous value, make a note of it
