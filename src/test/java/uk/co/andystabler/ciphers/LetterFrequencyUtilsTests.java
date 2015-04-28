@@ -30,7 +30,7 @@ public class LetterFrequencyUtilsTests {
         @Test
         public void emptyString_Returns0() {
             String text = "";
-            double ic = 0.0;
+            double ic = -1;
             Assert.assertEquals(ic, LetterFrequencyUtils.indexOfCoincidence(text), 0);
         }
 
@@ -68,7 +68,7 @@ public class LetterFrequencyUtilsTests {
                     "world  could  be  made  a  good and happy place. This time it was\n" +
                     "right, it would work, and no one would  have  to  get  nailed  to\n" +
                     "anything.";
-            double ic = 0.066700912423777;
+            double ic = 0.06670091242377664;
             Assert.assertEquals(ic, LetterFrequencyUtils.indexOfCoincidence(text), 1e-6);
         }
     }
