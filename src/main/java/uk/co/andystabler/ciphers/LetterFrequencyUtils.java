@@ -46,35 +46,6 @@ public class LetterFrequencyUtils {
             A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
     };
 
-    /**
-     * Compares inFreq with frequencies of english language and returns the total offset
-     *
-     * @param inFreq frequencies of characters in ciphertext
-     * @return total offset value
-     */
-    public static int calculateFrequencyOffset(double[] inFreq) {
-        int currentDiff = 0;
-        for (int i = 0; i < inFreq.length; i++)
-            currentDiff += Math.abs(FREQUENCIES[i] - inFreq[i]);
-        return currentDiff;
-    }
-
-    /**
-     * @return the frequency of each alphabetic character in the message
-     */
-    public static double[] calculateFrequencies(String message) {
-        // only interested in the alphabet
-        message = message.replaceAll("[^a-zA-Z]", "").toUpperCase();
-
-        double[] frequencies = new double[ALPHABET_COUNT];
-
-        // update the frequency of this character using the ASCII character value
-        for (char c : message.toCharArray())
-            frequencies[c - 'A'] += (100.0 / message.length());
-
-        return frequencies;
-    }
-
     public static int[] countCharacters(String message) {
         message = message.replaceAll("[^a-zA-Z]", "").toUpperCase();
         int[] counts = new int[ALPHABET_COUNT];
