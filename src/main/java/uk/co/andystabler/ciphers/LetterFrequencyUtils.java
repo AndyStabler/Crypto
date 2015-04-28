@@ -110,29 +110,29 @@ public class LetterFrequencyUtils {
     }
 
     /**
-     * Index of Coincidence is {@code Σ((Pi)*(Pi*N-1)/(N-1))}, where Pi is the probability of the {@code ith} character occurring in the text and N is the length of the input.
-     * <p>
-     * The probability of characters occurring in the text is calculated by counting occurrences of characters in the text, done
-     * in the {@link LetterFrequencyUtils#calculateFrequencies(String)} method.
+     * Index of Coincidence is {@code (Σ Fi * (Fi - 1))/N * (N - 1)}, where {@code Fi} is the frequency of the {@code ith} character
+     * of the alphabet in the ciphertext and {@code N} is the length of the input.
      *
      * @param text the text to analyse
      * @return index of coincidence
      */
     public static double indexOfCoincidence(String text) {
-        double indexCo = 0.0;
+
         // ignore anything other than the alphabet
-        text = text.replaceAll("[^a-zA-Z]", "");
+        text = text.replaceAll("[^a-zA-Z]", "").toUpperCase();
+        if (text.length() < 1) return -1;
+        // get the probability of each character occurring in the text
+        int[] counts = LetterFrequencyUtils.countCharacters(text);
 
-        // get the probability of each character occuring in the text
-        double[] inStringFreq = LetterFrequencyUtils.calculateFrequencies(text);
-
-        for (int i = 0; i < inStringFreq.length; i++) {
-            // ICi = Pi * (Pi * (N - 1))/(N - 1)
-            double pi = inStringFreq[i] / 100;
-            indexCo += pi * ((pi * text.length() - 1) / (text.length() - 1));
+        double sum = 0.0;
+        // sum of Fi * (Fi - 1)
+        for (int i = 0; i < LetterFrequencyUtils.ALPHABET_COUNT; i++) {
+            double fi = counts[i];
+            if (fi > 0.0)
+                sum += fi * (fi - 1.0);
         }
-
-        return indexCo;
+        // divide by N * (N - 1)
+        return sum / (text.length() * (text.length() - 1));
     }
 
     /**
