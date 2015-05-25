@@ -1,7 +1,6 @@
 package uk.co.andystabler.ciphers;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -207,7 +206,7 @@ public class VigenereCipherTests {
                     "hgi bsi qeffid kmlv ucq fpwd, iyh fg urm tmkv agvf kbw pccwjgwj zgd bsi\n" +
                     "qwkdyj, nino rq zvcfs bciyvcu fawm l hmi ryul tio vmnjvx az azqcvfzhy\n" +
                     "euppja.";
-            text = text.replaceAll("[^a-zA-Z]","");
+            text = text.replaceAll("[^a-zA-Z]", "");
             String key = "MILEYCYRUS";
             Assert.assertEquals(key, VigenereCipher.calculateKey(text));
         }
@@ -217,9 +216,24 @@ public class VigenereCipherTests {
          * really works for long strings!
          */
         @Test
-        @Ignore
-        public void keyLength3ShortText() {
+        public void keyLength3ShortText_unableToCalculate() {
             String text = "vhx vrnvh bu rtteea pnte tpd ggvxt sbopeg. tagsx yekg tag whtdl qf huctt wbndx.";
+            text = text.replaceAll("[^a-zA-Z]", "");
+            String key = "CAT";
+            Assert.assertNotEquals(key, VigenereCipher.calculateKey(text));
+
+        }
+
+        @Test
+        public void hitchhikersExcerpt() {
+            String text = "Hak qum kn mje npcacrmgd uccdyamgrl qf mje npftuhbqntdlx  gnw  qf\n" +
+                    "mje  pgsmgrg  upbtae  crf  qf  mje Zcltzy ekel c sfcle wnkggttdxf\n" +
+                    "yxnlhy snp.\n" +
+                    "\n" +
+                    "Okdimknz vhbu am c dbuttpcx qf kquzjlr piggtr-vwh  oienihp  mbnel\n" +
+                    "ks  tp  umvekny bpsbinbhivcnm nimvlx dlng gkgeg rltpem yhhue tre-\n" +
+                    "wgsvgnwgd ekfx hokos tte lq afczbpgea pkkmbviog tact  mjer  utbnl\n" +
+                    "mjigm dbiimcl pctvjel crx c pkgtma nxct bfet.\n";
             text = text.replaceAll("[^a-zA-Z]", "");
             String key = "CAT";
             Assert.assertEquals(key, VigenereCipher.calculateKey(text));
