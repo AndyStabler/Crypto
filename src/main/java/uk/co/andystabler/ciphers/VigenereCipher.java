@@ -87,23 +87,25 @@ public class VigenereCipher {
         // ciphertext is restricted to A-Z
         ciphertext = ciphertext.replaceAll("[^a-zA-Z]", "");
 
+        // set the max key length to 12 or the length of the ciphertext if it's too short
         int maxKeyLen = 12;
         maxKeyLen = maxKeyLen > ciphertext.length() ? ciphertext.length() : maxKeyLen;
-        int keyLen = -1;
+
         for (int i = 2; i < maxKeyLen; i++) {
+            // get each Caesar cipher's encrypted text for a key of length i
             List<String> stringsAtInterval = StringUtils.getAllStringsAtInterval(ciphertext, i);
+            // calculate the avg Ic
             double tempIc = stringsAtInterval.stream()
                     // calculate the index of coincidence for every string
                     .mapToDouble(LetterFrequencyUtils::indexOfCoincidence)
-                            // get the average index of coincidence
+                    // get the average index of coincidence
                     .average().getAsDouble();
-            // the key length produces text with character frequencies close to english - this is our best guess at the
-            // key length
+            // if the avg Ic for each Caesar cipher's ciphertext is "close" to the english Ic, we've found our length
             if (LetterFrequencyUtils.closeToEng(tempIc))
                 return i;
         }
 
-        return keyLen;
+        return -1;
     }
 
     /**
